@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Los gatos casi nunca fallan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8f6f2;
+      --surface: #ffffff;
+      --surface-subtle: #f5f2eb;
+      --border: #e6e0d6;
+      --text: #26221f;
+      --text-muted: #706a64;
+      --primary: #e66a2b;
+      --primary-hover: #d25b1f;
+      --primary-light: #fef0e7;
+      --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.03);
+      --shadow-card: 0 10px 28px -4px rgba(45, 35, 25, 0.07), 0 2px 8px -1px rgba(45, 35, 25, 0.04);
+      --radius: 18px;
+      --transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #151413;
+        --surface: #1e1d1b;
+        --surface-subtle: #272522;
+        --border: #36322e;
+        --text: #f4f0ea;
+        --text-muted: #a39c94;
+        --primary: #f07437;
+        --primary-hover: #ff854a;
+        --primary-light: #2e221b;
+        --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.2);
+        --shadow-card: 0 12px 30px -4px rgba(0, 0, 0, 0.45);
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    main {
+      width: 100%;
+      max-width: 560px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Cabecera */
+    header {
+      text-align: center;
+      margin-bottom: 2px;
+    }
+
+    .avatar-contenedor {
+      display: inline-block;
+      position: relative;
+      margin-bottom: 12px;
+    }
+
+    .avatar-gato {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      border: 3px solid var(--surface);
+      box-shadow: 0 8px 20px rgba(230, 106, 43, 0.22), var(--shadow-sm);
+      transition: var(--transition);
+    }
+
+    .avatar-contenedor:hover .avatar-gato {
+      transform: scale(1.08) rotate(4deg);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--primary);
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.35rem);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .lema {
+      color: var(--text-muted);
+      font-size: 1rem;
+      max-width: 440px;
+      margin: 0 auto;
+    }
+
+    /* Tarjetas */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow-card);
+      transition: var(--transition);
+    }
+
+    /* Caja de frases e imágenes reales */
+    .quote-box {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .quote-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+    }
+
+    /* Marco de foto real */
+    .foto-contenedor {
+      position: relative;
+      width: 100%;
+      height: 240px;
+      border-radius: 14px;
+      overflow: hidden;
+      background-color: var(--surface-subtle);
+      box-shadow: inset 0 0 0 1px var(--border);
+    }
+
+    .foto-gato {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: opacity 0.22s ease, transform 0.25s ease;
+    }
+
+    .foto-gato.cambiando {
+      opacity: 0;
+      transform: scale(0.97);
+    }
+
+    .etiqueta-gato {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      background: rgba(20, 18, 16, 0.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: #ffffff;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 8px;
+      letter-spacing: 0.02em;
+    }
+
+    .quote-body {
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      padding: 2px 0;
+    }
+
+    #frase {
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.45;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    #frase.fade-out {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+
+    .acciones {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .btn-principal {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--primary);
+      color: #ffffff;
+      border: none;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 12px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(230, 106, 43, 0.28);
+      transition: var(--transition);
+      user-select: none;
+    }
+
+    .btn-principal:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(230, 106, 43, 0.38);
+    }
+
+    .btn-principal:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .btn-secundario {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: var(--surface-subtle);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 12px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: var(--transition);
+      user-select: none;
+    }
+
+    .btn-secundario:hover {
+      color: var(--text);
+      border-color: var(--text-muted);
+    }
+
+    .btn-secundario:active {
+      transform: scale(0.97);
+    }
+
+    /* Lista de Datos con Fotos Reales */
+    .datos-titulo {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .lista-datos {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .lista-datos li {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    .miniatura-gato {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      object-fit: cover;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border);
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <header>
+      <div class="avatar-contenedor">
+        <img class="avatar-gato" src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=200&q=80" alt="Retrato de gato">
+      </div>
+      <div>
+        <div class="badge">
+          <span class="badge-dot"></span>
+          <span>Práctica de Git</span>
+        </div>
+      </div>
+      <h1>Los gatos casi nunca fallan</h1>
+      <p class="lema">Mi primer repositorio dedicado a los GATOS.</p>
+    </header>
+
+    <section class="card quote-box">
+      <div class="quote-header">
+        <span>Pensamiento felino</span>
+        <span id="contador">1 / 6</span>
+      </div>
+
+      <div class="foto-contenedor">
+        <img id="foto-gato" class="foto-gato" src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=800&q=80" alt="Gato mirando fijamente">
+        <span id="etiqueta-gato" class="etiqueta-gato">Michi Clásico</span>
+      </div>
+
+      <div class="quote-body">
+        <p id="frase">"Miau. Eso es todo. Miau."</p>
+      </div>
+
+      <div class="acciones">
+        <button id="boton" class="btn-principal" type="button">
+          <span>🎲</span>
+          <span>Otra frase y foto</span>
+        </button>
+        <button id="btn-copiar" class="btn-secundario" type="button" title="Copiar frase">
+          <span>📋</span>
+          <span id="texto-copiar">Copiar</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="datos-titulo">
+        <span>✨</span>
+        <span>Datos de gato</span>
+      </h2>
+      <ul class="lista-datos">
+        <li>
+          <img class="miniatura-gato" src="https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?auto=format&fit=crop&w=200&q=80" alt="Gato durmiendo cómodamente">
+          <span>Duermen entre 12 y 16 horas al día para recargar energía.</span>
+        </li>
+        <li>
+          <img class="miniatura-gato" src="https://images.unsplash.com/photo-1518791841217-8f162f1e1131?auto=format&fit=crop&w=200&q=80" alt="Gato con orejas atentas">
+          <span>Pueden rotar sus orejas casi 180 grados de forma independiente.</span>
+        </li>
+        <li>
+          <img class="miniatura-gato" src="https://images.unsplash.com/photo-1535930891776-0c2dfb7fda1a?auto=format&fit=crop&w=200&q=80" alt="Gato ágil y despierto">
+          <span>Casi siempre caen de pie gracias a su reflejo de enderezamiento.</span>
+        </li>
+        <li>
+          <img class="miniatura-gato" src="https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&w=200&q=80" alt="Gato tranquilo y relajado">
+          <span>Ronronean cuando están relajados, pero también para autocalmarse.</span>
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <script>
+    const michis = [
+      {
+        frase: "Miau. Eso es todo. Miau.",
+        etiqueta: "Michi Clásico",
+        foto: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=800&q=80",
+        alt: "Gato atigrado con ojos verdes"
+      },
+      {
+        frase: "Si quepo, me siento. Y si no quepo, también.",
+        etiqueta: "Experto en Cajas",
+        foto: "https://images.unsplash.com/photo-1543852786-1cf6624b9987?auto=format&fit=crop&w=800&q=80",
+        alt: "Gato cómodo y estirado"
+      },
+      {
+        frase: "Tirar cosas de la mesa es un trabajo honesto y necesario.",
+        etiqueta: "Inspector de Gravedad",
+        foto: "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?auto=format&fit=crop&w=800&q=80",
+        alt: "Gato con actitud audaz"
+      },
+      {
+        frase: "Las 3:00 a. m. es el momento ideal para una carrera supersónica.",
+        etiqueta: "Atleta Nocturno",
+        foto: "https://images.unsplash.com/photo-1495360010541-f48722b34f7d?auto=format&fit=crop&w=800&q=80",
+        alt: "Gato con ojos brillantes y alerta"
+      },
+      {
+        frase: "Esa caja de cartón es mía. Tú solo pagaste por ella.",
+        etiqueta: "Dueño Legal",
+        foto: "https://images.unsplash.com/photo-1573865526739-10659fec78a5?auto=format&fit=crop&w=800&q=80",
+        alt: "Gato esponjoso y relajado"
+      },
+      {
+        frase: "Los gatos casi nunca fallan.",
+        etiqueta: "Perfección Felina",
+        foto: "https://images.unsplash.com/photo-1561948955-570b270e7c36?auto=format&fit=crop&w=800&q=80",
+        alt: "Gatito blanco adorable y solemne"
+      }
+    ];
+
+    // Precargar imágenes para una transición instantánea
+    michis.forEach(m => {
+      const img = new Image();
+      img.src = m.foto;
+    });
+
+    let indiceActual = 0;
+    const texto = document.getElementById("frase");
+    const fotoGato = document.getElementById("foto-gato");
+    const etiquetaGato = document.getElementById("etiqueta-gato");
+    const contador = document.getElementById("contador");
+    const btn = document.getElementById("boton");
+    const btnCopiar = document.getElementById("btn-copiar");
+    const textoCopiar = document.getElementById("texto-copiar");
+
+    function cambiarFrase() {
+      texto.classList.add("fade-out");
+      fotoGato.classList.add("cambiando");
+
+      setTimeout(() => {
+        let nuevoIndice;
+        do {
+          nuevoIndice = Math.floor(Math.random() * michis.length);
+        } while (nuevoIndice === indiceActual && michis.length > 1);
+
+        indiceActual = nuevoIndice;
+        const michi = michis[indiceActual];
+
+        fotoGato.src = michi.foto;
+        fotoGato.alt = michi.alt;
+        etiquetaGato.textContent = michi.etiqueta;
+        texto.textContent = `"${michi.frase}"`;
+        contador.textContent = `${indiceActual + 1} / ${michis.length}`;
+
+        fotoGato.classList.remove("cambiando");
+        texto.classList.remove("fade-out");
+      }, 190);
+    }
+
+    btn.addEventListener("click", cambiarFrase);
+
+    btnCopiar.addEventListener("click", async () => {
+      const contenido = texto.textContent.replace(/^"|"$/g, '');
+      try {
+        await navigator.clipboard.writeText(contenido);
+        textoCopiar.textContent = "¡Copiado!";
+        setTimeout(() => {
+          textoCopiar.textContent = "Copiar";
+        }, 1500);
+      } catch (err) {
+        textoCopiar.textContent = "¡Listo!";
+        setTimeout(() => {
+          textoCopiar.textContent = "Copiar";
+        }, 1500);
+      }
+    });
+  </script>
+</body>
+
+</html>
