@@ -1,0 +1,16 @@
+import random
+
+frases = [
+    "Los gatos siempre caen de pie 🐈",
+    "Miau. Eso es todo. Miau.",
+    "Si cabe, me siento. Si no cabe, igual me siento.",
+    "Tirar cosas de la mesa es mi trabajo.",
+    "Los gatos casi nunca fallan 😼",
+]
+
+def main():
+    print("¡Bienvenido al repo de los gatos!")
+    print(random.choice(frases))
+
+if __name__ == "__main__":
+    main()
