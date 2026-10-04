@@ -6,6 +6,7 @@ frases = [
     "Si cabe, me siento. Si no cabe, igual me siento.",
     "Tirar cosas de la mesa es mi trabajo.",
     "Los gatos casi nunca fallan 😼",
+    "Un gato siempre revisa el git status antes de dormir 😼",
 ]
 
 def main():
