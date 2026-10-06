@@ -8,6 +8,7 @@ frases = [
     "Los gatos casi nunca fallan 😼",
     "Un gato siempre revisa el git status antes de dormir 😼",
     "Un gato siempre hace git pull y git push cuando es necesario",
+    "Un gato es un minino",
 ]
 
 def main():
